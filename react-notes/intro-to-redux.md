@@ -377,7 +377,7 @@ const addTodo = (text) => {
 
 ```mermaid
 graph LR;
-    Component-->|dispatch(action)|Store;
+    Component-->|dispatch - action|Store;
     Store-->|state change|Component;
     Component-->|useSelector|Store;
 ```

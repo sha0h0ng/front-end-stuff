@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Preview with Bounding Box</title>
+  <style>
+    /* Styles for the image and bounding boxes */
+    .image-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .image-container img {
+      cursor: crosshair;
+      border: 1px solid black;
+    }
+
+    .bounding-box {
+      position: absolute;
+      border: 2px solid red;
+      background-color: rgba(255, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div id="imagePreview" class="image-container">
+    <img
+      id="image"
+      src=""
+      alt="Preview"
+      style="display: none"
+    />
+    <p>Click and drag on the image to draw a bounding box.</p>
+  </div>
+
+  <script>
+    // Initial data for the image
+    const images = [
+      {
+        preview: 'https://via.placeholder.com/800', // Example image
+      },
+    ];
+    const boundingBoxes = []; // To store the bounding boxes
+    let isDrawing = false; // Track whether the user is currently drawing a box
+    let startX, startY; // Starting coordinates for the bounding box
+    let currentBox; // The current bounding box being drawn
+
+    // Reference to the image element
+    const image = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+
+    // Show the image when it's loaded
+    if (images.length > 0) {
+      image.src = images[0].preview;
+      image.style.display = 'block';
+    }
+
+    // Start drawing the bounding box
+    function startDrawing(event) {
+      const rect = image.getBoundingClientRect();
+      startX = event.clientX - rect.left;
+      startY = event.clientY - rect.top;
+      isDrawing = true;
+
+      // Create a new bounding box div and set its initial position
+      currentBox = document.createElement('div');
+      currentBox.classList.add('bounding-box');
+      currentBox.style.left = `${startX}px`;
+      currentBox.style.top = `${startY}px`;
+      currentBox.style.width = '0px';
+      currentBox.style.height = '0px';
+
+      // Append the bounding box to the image container
+      imagePreview.appendChild(currentBox);
+
+      // Add event listeners for mousemove and mouseup
+      document.addEventListener('mousemove', drawBoundingBox);
+      document.addEventListener('mouseup', finishDrawing);
+    }
+
+    // Draw the bounding box while the mouse is moving
+    function drawBoundingBox(event) {
+      if (!isDrawing) return;
+
+      const rect = image.getBoundingClientRect();
+      const currentX = event.clientX - rect.left;
+      const currentY = event.clientY - rect.top;
+
+      // Calculate the width and height of the bounding box
+      const width = currentX - startX;
+      const height = currentY - startY;
+
+      // Update the dimensions of the bounding box
+      currentBox.style.width = `${Math.abs(width)}px`;
+      currentBox.style.height = `${Math.abs(height)}px`;
+
+      // Adjust the top-left corner if the user drags to the left or upwards
+      currentBox.style.left = `${Math.min(currentX, startX)}px`;
+      currentBox.style.top = `${Math.min(currentY, startY)}px`;
+    }
+
+    // Finish drawing the bounding box
+    function finishDrawing() {
+      if (isDrawing) {
+        boundingBoxes.push({
+          x: parseInt(currentBox.style.left),
+          y: parseInt(currentBox.style.top),
+          width: parseInt(currentBox.style.width),
+          height: parseInt(currentBox.style.height),
+        });
+        isDrawing = false;
+
+        // Remove the event listeners after drawing is finished
+        document.removeEventListener('mousemove', drawBoundingBox);
+        document.removeEventListener('mouseup', finishDrawing);
+      }
+    }
+
+    // Attach mousedown event listener to the image to start drawing
+    image.addEventListener('mousedown', startDrawing);
+  </script>
+</body>
+</html>

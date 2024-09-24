@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Bounding Box Tracking</title>
+  <style>
+    /* Container holding the video and bounding boxes */
+    .video-container {
+      position: relative;
+      width: 640px;
+      height: 360px;
+    }
+
+    /* Bounding box styles */
+    .bounding-box {
+      position: absolute;
+      border: 2px solid red;
+      background-color: rgba(255, 0, 0, 0.2);
+    }
+
+    /* Style the video */
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="video-container" id="videoContainer">
+    <video id="video" controls>
+      <source src="https://test-videos.co.uk/vids/sintel/mp4/h264/720/Sintel_720_10s_1MB.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <script>
+    // Store the bounding box data
+    const boundingBoxData = [
+      // Example data:
+      // { time: 2, x: 50, y: 50, width: 100, height: 100 },
+      // { time: 4, x: 200, y: 100, width: 150, height: 150 },
+    ];
+
+    let isDrawing = false;
+    let startX, startY, currentBox;
+
+    const video = document.getElementById('video');
+    const videoContainer = document.getElementById('videoContainer');
+
+    // Listen for video time updates and adjust bounding boxes accordingly
+    video.addEventListener('timeupdate', () => {
+      const currentTime = video.currentTime;
+      updateBoundingBoxes(currentTime);
+    });
+
+    // Start drawing a bounding box on mousedown
+    videoContainer.addEventListener('mousedown', (event) => {
+      const rect = videoContainer.getBoundingClientRect();
+      startX = event.clientX - rect.left;
+      startY = event.clientY - rect.top;
+      isDrawing = true;
+
+      currentBox = document.createElement('div');
+      currentBox.classList.add('bounding-box');
+      currentBox.style.left = `${startX}px`;
+      currentBox.style.top = `${startY}px`;
+      currentBox.style.width = '0px';
+      currentBox.style.height = '0px';
+
+      videoContainer.appendChild(currentBox);
+    });
+
+    // Adjust the size of the bounding box while dragging
+    videoContainer.addEventListener('mousemove', (event) => {
+      if (!isDrawing) return;
+      const rect = videoContainer.getBoundingClientRect();
+      const currentX = event.clientX - rect.left;
+      const currentY = event.clientY - rect.top;
+
+      const width = currentX - startX;
+      const height = currentY - startY;
+
+      currentBox.style.width = `${Math.abs(width)}px`;
+      currentBox.style.height = `${Math.abs(height)}px`;
+      currentBox.style.left = `${Math.min(currentX, startX)}px`;
+      currentBox.style.top = `${Math.min(currentY, startY)}px`;
+    });
+
+    // Finish drawing and store bounding box info with video time
+    videoContainer.addEventListener('mouseup', () => {
+      if (!isDrawing) return;
+      const rect = videoContainer.getBoundingClientRect();
+      const boxX = parseInt(currentBox.style.left, 10);
+      const boxY = parseInt(currentBox.style.top, 10);
+      const boxWidth = parseInt(currentBox.style.width, 10);
+      const boxHeight = parseInt(currentBox.style.height, 10);
+
+      boundingBoxData.push({
+        time: video.currentTime, // Store time of the box
+        x: boxX,
+        y: boxY,
+        width: boxWidth,
+        height: boxHeight,
+      });
+
+      isDrawing = false;
+    });
+
+    // Function to update the bounding boxes based on the current time
+    function updateBoundingBoxes(currentTime) {
+      // Remove existing boxes
+      const existingBoxes = document.querySelectorAll('.bounding-box');
+      existingBoxes.forEach((box) => box.remove());
+
+      // Loop through the boundingBoxData and find boxes at the current time
+      for (let i = 0; i < boundingBoxData.length; i++) {
+        const box = boundingBoxData[i];
+
+        if (box.time <= currentTime) {
+          const boundingBox = document.createElement('div');
+          boundingBox.classList.add('bounding-box');
+          boundingBox.style.left = `${box.x}px`;
+          boundingBox.style.top = `${box.y}px`;
+          boundingBox.style.width = `${box.width}px`;
+          boundingBox.style.height = `${box.height}px`;
+
+          videoContainer.appendChild(boundingBox);
+        }
+      }
+    }
+  </script>
+</body>
+</html>

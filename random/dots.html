@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Preview with Dots</title>
+  <style>
+    /* Styles for the image and dots */
+    .image-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .image-container img {
+      cursor: crosshair;
+      border: 1px solid black;
+    }
+
+    .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+  <div id="imagePreview" class="image-container">
+    <img
+      id="image"
+      src=""
+      alt="Preview"
+      style="display: none"
+      onclick="handleImageClick(event)"
+    />
+    <p>Click on the image to mark points. Dots will appear in the selected color.</p>
+  </div>
+
+  <script>
+    // Initial data for the image and points
+    const images = [
+      {
+        preview: 'https://via.placeholder.com/800', // Example image
+      },
+    ];
+    const coordinates = [];
+    const selectedColor = 'red'; // Change this color based on user selection
+
+    // Reference to the image element
+    const image = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+
+    // Show the image when it's loaded
+    if (images.length > 0) {
+      image.src = images[0].preview;
+      image.style.display = 'block';
+    }
+
+    // Handle image click to add a new point
+    function handleImageClick(event) {
+      const rect = image.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      // Add the new coordinate to the list
+      coordinates.push({ x, y, color: selectedColor });
+
+      // Create a dot and place it on the image
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      dot.style.top = `${y}px`;
+      dot.style.left = `${x}px`;
+      dot.style.backgroundColor = selectedColor;
+
+      // Append the dot to the image preview container
+      imagePreview.appendChild(dot);
+    }
+  </script>
+</body>
+</html>

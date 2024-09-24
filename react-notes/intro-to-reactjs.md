@@ -1,14 +1,14 @@
 # ReactJS Crash Course for Python Programmers
 
-## Course Outline
+## Table of Contents
 
-1. **Introduction to ReactJS**
+1. [**Introduction to ReactJS**](#1-introduction-to-reactjs)
 
    - What is ReactJS?
    - Benefits of using ReactJS
    - Comparing ReactJS with Python OOP concepts
 
-2. **Setting Up the Development Environment**
+2. [**Setting Up the Development Environment**](#2-setting-up-the-development-environment)
 
    - Installing Node.js and npm
    - Using Vite to create a new React project
@@ -16,45 +16,58 @@
    - Additional setup steps
    - Installing and setting up React Bootstrap for theming
 
-3. **Understanding Components**
+3. [**Understanding Components**](#3-understanding-components)
 
    - What are components in React?
    - Functional components
    - Building components using OOP principles
    - Creating your first React component
 
-4. **Props in React**
+4. [**Props in React**](#4-props-in-react)
 
    - Understanding props as component arguments
    - Passing data between components
-   - Default props and prop types
+   - Visualizing Props with a Component Tree Diagram
+   - Passing Data from Child to Parent Components
+   - Complete Example with Parent and Child Components
+   - Tips for Using Props Effectively
 
-5. **State Management**
+5. [**State Management**](#5-state-management)
 
    - Introduction to state in React
    - Using the `useState` hook
    - Managing state in functional components
+   - Best Practices for Managing State
+   - Common Mistakes to Avoid
+   - More Advanced Examples
 
-6. **Handling Events**
+6. [**Handling Events**](#6-handling-events)
 
    - Event handling in React
-   - Updating state based on user interactions
+   - Common Events in React
+   - Basic Event Handling Example
+   - Passing Arguments to Event Handlers
+   - Preventing Default Behavior
+   - Handling Events with Input Fields
+   - Synthetic Events in React
+   - Event Handling in Class Components
+   - Common Pitfalls and Things to Look Out For
 
-7. **Consuming RESTful APIs with Axios**
+7. [**Consuming RESTful APIs with Axios**](#7-consuming-restful-apis-with-axios)
 
    - Introduction to Axios
    - Making GET and POST requests
    - Handling asynchronous data with `useEffect`
    - Understanding the frontend-backend interaction
 
-8. **React Router**
+8. [**React Router**](#8-react-router)
 
    - Setting up React Router
    - Defining routes and navigation
    - Difference between pages and components
    - Creating a multi-page application
 
-9. **Project: Building a Simple Web Application**
+9. [**Project: Building a Simple Web Application**](#9-project-building-a-simple-web-application)
 
    - Integrating all concepts learned
    - Building a responsive UI with React Bootstrap
@@ -62,15 +75,15 @@
    - Implementing navigation with React Router
    - Visualizing application flow with a diagram
 
-10. **Recap and Further Learning**
+10. [**Recap and Further Learning**](#10-recap-and-further-learning)
 
     - Recap of key concepts
     - Resources for further learning
 
-11. **FAQs**
-    - What is `JSX`?
-    - Difference Between `.js` and `.jsx` Files
-    - What is Babel and Its Relation to React
+11. [**FAQs**](#11-faqs)
+    - [What is `JSX`?](#what-is-jsx)
+    - [Difference Between `.js` and `.jsx` Files](#difference-between-js-and-jsx-files)
+    - [What is Babel and Its Relation to React](#what-is-babel-and-its-relation-to-react)
 
 ---
 

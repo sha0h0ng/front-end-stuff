@@ -68,6 +68,7 @@
     - Resources for further learning
 
 11. **FAQs**
+    - What is `JSX`?
     - Difference Between `.js` and `.jsx` Files
     - What is Babel and Its Relation to React
 
@@ -3936,6 +3937,137 @@ my-react-app/
 ---
 
 ## 11. FAQs
+
+### What is JSX?
+
+**JSX** (JavaScript XML) is a syntax extension for JavaScript that allows you to write HTML-like code within JavaScript. It is commonly used in **React** to describe the structure of the user interface (UI). JSX allows developers to write markup directly in JavaScript, and it makes it easier to visualize the component structure.
+
+While JSX looks similar to HTML, it is not HTML. JSX is converted (or **transpiled**) into regular JavaScript using tools like **Babel** before being executed in the browser.
+
+Example of JSX in a React component:
+
+```jsx
+function HelloWorld() {
+  return <h1>Hello, World!</h1>;
+}
+```
+
+This JSX is transpiled to the following JavaScript:
+
+```js
+function HelloWorld() {
+  return React.createElement('h1', null, 'Hello, World!');
+}
+```
+
+### Differences Between JSX and HTML:
+
+Although JSX and HTML look very similar, there are some key differences between the two:
+
+#### 1. **JSX Is JavaScript, HTML Is Markup**
+
+- **JSX** is a syntax extension for JavaScript. It allows you to write UI structure inside your JavaScript code. JSX gets transpiled to JavaScript by tools like Babel.
+- **HTML** is a markup language used to define the structure of web pages. It is not embedded directly in JavaScript and is served as a separate document in most web applications.
+
+#### 2. **JSX Elements Use CamelCase for Attributes**
+
+- In JSX, **attribute names** follow JavaScript's camelCase convention, while in HTML, attributes are usually lowercase.
+
+Example:
+
+- JSX: `<div className="container"></div>`
+- HTML: `<div class="container"></div>`
+
+- **Why**: `className` is used in JSX because `class` is a reserved keyword in JavaScript.
+
+#### 3. **JSX Uses Curly Braces to Embed JavaScript Expressions**
+
+- In JSX, curly braces (`{}`) are used to embed JavaScript expressions within the markup. In HTML, JavaScript expressions are typically handled using `<script>` tags or event attributes like `onclick`.
+
+Example:
+
+- JSX: `<p>{5 + 5}</p>` renders `10` on the page.
+- HTML: You would use JavaScript separately or inline.
+
+#### 4. **Self-Closing Tags in JSX**
+
+- In JSX, you must **self-close** all tags that do not have children, like `<img />`, `<input />`, `<br />`, etc. In HTML, these tags can optionally be self-closed or left unclosed.
+
+Example:
+
+- JSX: `<img src="logo.png" />`
+- HTML: `<img src="logo.png">` or `<img src="logo.png" />`
+
+#### 5. **JSX Elements Must Be Wrapped in a Single Parent Element**
+
+- In JSX, elements must be wrapped in a single enclosing parent element because a component can only return one element.
+
+Example:
+
+- JSX:
+  ```jsx
+  return (
+    <div>
+      <h1>Title</h1>
+      <p>Description</p>
+    </div>
+  );
+  ```
+- HTML:
+
+  ```html
+  <h1>Title</h1>
+  <p>Description</p>
+  ```
+
+  In HTML, elements can stand independently, but JSX requires a parent container, like a `<div>`, or you can use **React fragments** (`<>`).
+
+#### 6. **JSX Allows Dynamic Content with JavaScript**
+
+- In JSX, you can directly embed JavaScript logic or variables inside curly braces `{}`, whereas HTML doesn't support this natively and requires JavaScript (usually via `<script>` or event attributes).
+
+Example:
+
+- JSX:
+  ```jsx
+  const name = 'Alice';
+  return <h1>Hello, {name}!</h1>;
+  ```
+- HTML: Dynamic content typically requires DOM manipulation using JavaScript:
+  ```html
+  <h1>Hello, <span id="name"></span>!</h1>
+  <script>
+    document.getElementById('name').textContent = 'Alice';
+  </script>
+  ```
+
+#### 7. **JSX Allows More Complex Logic and Components**
+
+- JSX allows you to create reusable **components**, conditional rendering, and loops using JavaScript logic. HTML on its own doesn't support logic and needs to rely on JavaScript outside of it.
+
+Example (conditional rendering):
+
+- JSX:
+  ```jsx
+  const isLoggedIn = true;
+  return isLoggedIn ? <h1>Welcome back!</h1> : <h1>Please log in</h1>;
+  ```
+- HTML: Needs JavaScript outside the HTML to handle conditional rendering.
+
+### Summary of Key Differences:
+
+| Feature                          | JSX                                 | HTML                                    |
+| -------------------------------- | ----------------------------------- | --------------------------------------- |
+| Language                         | JavaScript syntax extension         | Markup language                         |
+| Attribute naming convention      | camelCase (`className`, `onClick`)  | lowercase (`class`, `onclick`)          |
+| Embedding JavaScript expressions | Curly braces (`{}`) for expressions | JavaScript in `<script>` tags or inline |
+| Self-closing tags                | Required for tags without children  | Optional                                |
+| Single parent element required   | Yes                                 | No                                      |
+| Logic and dynamic content        | Directly supported                  | Requires JavaScript outside             |
+
+In short, **JSX** is an abstraction layer that allows you to write HTML-like syntax in JavaScript, making it easier to build complex UIs. It is tightly integrated with JavaScript logic and allows dynamic manipulation of elements, while HTML is static and doesn't handle logic natively.
+
+---
 
 ### Difference Between `.js` and `.jsx` Files
 

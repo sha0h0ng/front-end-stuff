@@ -596,9 +596,6 @@ my-react-app/
 **Explanation**:
 
 - **`src/components/`**: Contains all your reusable components.
-  - **`Car.jsx`**: Displays car information.
-  - **`CustomButton.jsx`**: A customizable button component.
-  - **`Greeting.jsx`**: A simple greeting component.
   - **`ItemList.jsx`**: Renders a list of items.
   - **`UserProfile.jsx`**: Displays user profile information.
   - **`Welcome.jsx`**: A welcome message component.

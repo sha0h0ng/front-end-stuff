@@ -255,8 +255,8 @@ React Bootstrap integrates Bootstrap's CSS framework with React's components.
    import { StrictMode } from 'react';
    import { createRoot } from 'react-dom/client';
    import App from './App.jsx';
-   import 'bootstrap/dist/css/bootstrap.min.css';
    import './index.css';
+   import 'bootstrap/dist/css/bootstrap.min.css';
 
    createRoot(document.getElementById('root')).render(
      <StrictMode>
@@ -283,13 +283,15 @@ React Bootstrap integrates Bootstrap's CSS framework with React's components.
    export default App;
    ```
 
+For more components, please refer to this [site](https://react-bootstrap.netlify.app/docs/components/accordion).
+
 ---
 
 ## 3. Understanding Components
 
 ### What Are Components in React?
 
-Components are the fundamental building blocks of a React application. They enable you to split the UI into independent, reusable pieces that can be managed and developed separately. Each component is a JavaScript function or class that optionally accepts inputs (called "props") and returns a React element that describes a part of the UI.
+Components are the fundamental building blocks of a React application. They enable you to split the UI into independent, reusable pieces that can be managed and developed separately. Each component is a JavaScript function or class that optionally accepts inputs (called "props", which will be cover in next section) and returns a React element that describes a part of the UI.
 
 - **Functional Components**: JavaScript functions that return JSX elements.
 - **Class Components**: ES6 classes that extend `React.Component` (less common with the advent of hooks).
@@ -298,13 +300,13 @@ Components are the fundamental building blocks of a React application. They enab
 
 Functional components are simpler and more concise than class components. They are JavaScript functions that accept props as an argument and return JSX.
 
-**Example 1: A Simple Greeting Component**
+**Example: A Simple Greeting Component**
 
 ```jsx
 // src/components/Greeting.jsx
 
-function Greeting({ name }) {
-  return <h1>Hello, {name}!</h1>;
+function Greeting() {
+  return <h1>Hello, World!</h1>;
 }
 
 export default Greeting;
@@ -320,42 +322,7 @@ import Greeting from './components/Greeting';
 function App() {
   return (
     <div>
-      <Greeting name='Alice' />
-      <Greeting name='Bob' />
-    </div>
-  );
-}
-
-export default App;
-```
-
-**Example 2: A Button Component**
-
-```jsx
-// src/components/CustomButton.jsx
-
-function CustomButton({ label, onClick }) {
-  return <button onClick={onClick}>{label}</button>;
-}
-
-export default CustomButton;
-```
-
-**Usage in `App.jsx`**
-
-```jsx
-// src/App.jsx
-
-import CustomButton from './components/CustomButton';
-
-function App() {
-  const handleClick = () => {
-    alert('Button clicked!');
-  };
-
-  return (
-    <div>
-      <CustomButton label='Click Me' onClick={handleClick} />
+      <Greeting/>
     </div>
   );
 }
@@ -388,7 +355,7 @@ class Car:
 ```jsx
 // src/components/Car.jsx
 
-function Car({ make, model }) {
+function Car() {
   return (
     <div>
       <h2>
@@ -450,8 +417,8 @@ Inside the `src/components/` directory, create a file named `Welcome.jsx`:
 ```jsx
 // src/components/Welcome.jsx
 
-function Welcome({ name }) {
-  return <h1>Welcome, {name}!</h1>;
+function Welcome() {
+  return <h1>Welcome!</h1>;
 }
 
 export default Welcome;
@@ -467,8 +434,7 @@ import Welcome from './components/Welcome';
 function App() {
   return (
     <div>
-      <Welcome name='Student' />
-      <Welcome name='Visitor' />
+      <Welcome />
     </div>
   );
 }
@@ -478,12 +444,14 @@ export default App;
 
 **Explanation**:
 
-- **`Welcome.jsx`**: Defines a `Welcome` component that accepts a `name` prop and displays a greeting.
+- **`Welcome.jsx`**: Defines a `Welcome` component that displays a greeting.
 - **`App.jsx`**: Imports the `Welcome` component and uses it twice with different `name` props.
 
 ### Additional Examples
 
 **Example 1: User Profile Component**
+
+> In this example of `{ user }`, just take it as what it is now and it will be covered in next section.
 
 ```jsx
 // src/components/UserProfile.jsx
@@ -526,6 +494,8 @@ export default App;
 ```
 
 **Example 2: List Component**
+
+> In this example of `{ items }`, just take it as what it is now and it will be covered in next section.
 
 ```jsx
 // src/components/ItemList.jsx

@@ -22,6 +22,7 @@
    - Functional components
    - Building components using OOP principles
    - Creating your first React component
+   - How to add style to component
 
 4. [**Props in React**](#4-props-in-react)
 
@@ -573,36 +574,15 @@ my-react-app/
 - **`src/services/`**: Reserved for service functions like API calls.
 - **`App.jsx`**: The main application file where components are imported and used.
 
-### Tips for Using Components
+### Best Practices
 
-- **Props Validation**: Consider using PropTypes to validate the props passed to your components.
+- **Keep Components Small and Focused**: Each component should ideally handle one specific task or part of the UI.
+- **Reusability**: Design components that can be reused with different data or in different contexts.
+- **Separation of Concerns**: Separate your components, styles, and logic to keep the codebase maintainable.
 
-  ```bash
-  npm install prop-types
-  ```
+### How to Add Style to Component
 
-  ```jsx
-  // Example in UserProfile.jsx
-  import PropTypes from 'prop-types';
-
-  UserProfile.propTypes = {
-    user: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-    }).isRequired,
-  };
-  ```
-
-- **Default Props**: Set default values for props to ensure your components have fallback values.
-
-  ```jsx
-  // Example in Greeting.jsx
-  Greeting.defaultProps = {
-    name: 'Guest',
-  };
-  ```
-
-- **Styling Components**: You can style components using CSS files, CSS modules, or styled-components.
+You can style components using CSS files, CSS modules, or styled-components.
 
   **Using a CSS File**:
 
@@ -640,12 +620,6 @@ my-react-app/
   }
   ```
 
-### Best Practices
-
-- **Keep Components Small and Focused**: Each component should ideally handle one specific task or part of the UI.
-- **Reusability**: Design components that can be reused with different data or in different contexts.
-- **Separation of Concerns**: Separate your components, styles, and logic to keep the codebase maintainable.
-
 ### Updating the File Structure with Styles
 
 If you're adding CSS files for styling components, your file structure will look like this:
@@ -681,7 +655,6 @@ my-react-app/
 ### Recap
 
 - **Components**: Reusable pieces of UI represented as functions returning JSX.
-- **Props**: Inputs to components that allow data to be passed from parent to child.
 - **Folder Structure**: Organizing your components in a dedicated folder enhances maintainability.
 - **File Naming**: Use clear and consistent naming conventions for files and components.
 - **Examples Provided**: Multiple component examples help solidify your understanding of how to create and use components.
@@ -784,6 +757,8 @@ graph TD;
 - **Composition**: Props allow components to be composed together, enabling complex UIs to be built from simple, reusable components.
 
 ### Passing Data from Child to Parent Components
+
+> You will need to understand about `State` which is covered in next section.
 
 While props are used to pass data from parent to child, there are situations where you need to communicate from a child component back to its parent. Since data flow in React is unidirectional, we achieve this by passing functions (callbacks) from the parent to the child via props. The child component can then call these functions, passing data as arguments.
 
@@ -933,6 +908,33 @@ export default Counter;
 - **Mermaid diagrams** can help visualize component hierarchies and data flow.
 
 ### Tips for Using Props Effectively
+
+- **Props Validation**: Consider using PropTypes to validate the props passed to your components.
+
+  ```bash
+  npm install prop-types
+  ```
+
+  ```jsx
+  // Example in UserProfile.jsx
+  import PropTypes from 'prop-types';
+
+  UserProfile.propTypes = {
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      email: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+  ```
+
+- **Default Props**: Set default values for props to ensure your components have fallback values.
+
+  ```jsx
+  // Example in Greeting.jsx
+  Greeting.defaultProps = {
+    name: 'Guest',
+  };
+  ```
 
 - **Destructure Props**: Use destructuring to make your code cleaner.
 

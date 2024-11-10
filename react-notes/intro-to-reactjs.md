@@ -985,6 +985,8 @@ By mastering props, you unlock the ability to create a well-structured and maint
 
 ## 5. State Management
 
+> In order to understand State better, please read the FAQ on [HTML onclick vs React onClick](#html-onclick-vs-react-onclick) first
+
 ### Introduction to State in React
 
 State is a built-in object in React that allows components to create and manage their own data, leading to interactive and dynamic user interfaces. It represents data that can change over time and directly affects what is rendered by the component.

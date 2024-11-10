@@ -85,6 +85,9 @@
     - [What is `JSX`?](#what-is-jsx)
     - [Difference Between `.js` and `.jsx` Files](#difference-between-js-and-jsx-files)
     - [What is Babel and Its Relation to React](#what-is-babel-and-its-relation-to-react)
+    - [HTML `onclick` vs React `onClick`](#html-onclick-vs-react-onclick)
+    - [What is `preventDefault()`?](what-is-preventdefault)
+    - [What is `stopPropagation()`?](#what-is-stoppropagation)
 
 ---
 

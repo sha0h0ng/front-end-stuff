@@ -1027,14 +1027,14 @@ import { useState } from 'react';
 function Counter() {
   const [count, setCount] = useState(0); // Initialize 'count' to 0
 
-  const increment = () => {
+  const handleIncrement = () => {
     setCount((prevCount) => prevCount + 1); // Update state based on previous value
   };
 
   return (
     <div>
       <p>Count: {count}</p>
-      <button onClick={increment}>Increment</button>
+      <button onClick={handleIncrement}>Increment</button>
     </div>
   );
 }
@@ -1047,6 +1047,8 @@ export default Counter;
 - **State Initialization**: The `count` state variable is initialized to `0`.
 - **State Update**: Calling `setCount` updates `count` and triggers a re-render.
 - **Functional Update**: Using a function inside `setCount` ensures you're working with the latest state, especially when updates are asynchronous.
+
+> Asynchronous Updates: Using the functional form `setCount((prevCount) => prevCount + 1)` ensures that you’re working with the most recent state, even if multiple updates are queued. This is especially important when several state updates happen in rapid succession or within asynchronous events, as **React batches updates for performance**
 
 **Example 2: Toggle Switch**
 

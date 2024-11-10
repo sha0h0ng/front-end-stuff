@@ -1195,6 +1195,8 @@ export default UserProfileForm;
 - **Spread Operator**: Uses the spread operator (`...prevUser`) to copy existing state and update only the changed field.
 - **Dynamic Property Names**: Updates the specific property in the state object corresponding to the `name` attribute of the input.
 
+> For more example on Spread Operator: [W3School](https://www.w3schools.com/react/react_es6_spread.asp), [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+
 #### Arrays in State
 
 You can manage arrays in state, such as a list of items.
@@ -4148,6 +4150,361 @@ In relation to React, Babel plays a crucial role by allowing developers to use J
 **Conclusion**
 
 Babel acts as a bridge between modern JavaScript code (including JSX) and the JavaScript that browsers can understand today. In the context of React, it enables the seamless use of JSX, making the process of building complex user interfaces more straightforward and efficient.
+
+---
+
+# HTML `onclick` vs React `onClick`
+
+The HTML onclick attribute is the traditional way to handle click events. It can be added directly to HTML elements and executes JavaScript code when clicked.
+
+Basic HTML onclick example:
+
+```html
+<button onclick="handleClick()">Click me</button>
+
+<script>
+function handleClick() {
+    alert('Button clicked!');
+}
+</script>
+```
+
+You can also use inline JavaScript directly:
+
+```html
+<button onclick="alert('Clicked!')">Click me</button>
+```
+
+```mermaid
+flowchart TD
+    subgraph HTML
+    A[HTML Element] -->|1. onclick attribute| B[JavaScript function]
+    B -->|2. Direct DOM manipulation| C[DOM Updates]
+    end
+
+    subgraph React
+    D[React Component] -->|1. onClick prop| E[Event Handler]
+    E -->|2. State Update| F[Virtual DOM]
+    F -->|3. Reconciliation| G[Real DOM Updates]
+    end
+
+    style HTML fill:#f9f,stroke:#333
+    style React fill:#bbf,stroke:#333
+
+```
+
+Now, let's look at React's onClick:
+
+React uses a camelCase onClick prop and takes a function reference rather than a string. It's part of React's synthetic event system:
+
+```jsx
+function MyButton() {
+    const handleClick = (event) => {
+        console.log('Button clicked!', event);
+    };
+
+    return (
+        <button onClick={handleClick}>Click me</button>
+    );
+}
+```
+
+Key differences between HTML onclick and React onClick:
+
+1. Syntax:
+   - HTML: lowercase `onclick="handleClick()"`
+   - React: camelCase `onClick={handleClick}`
+
+2. Value type:
+   - HTML: String containing JavaScript code
+   - React: Function reference (no quotes, no parentheses)
+
+3. Event handling:
+   - HTML: Directly manipulates the DOM
+   - React: Uses synthetic events and virtual DOM
+
+4. Context:
+   - HTML: 'this' refers to the DOM element
+   - React: Maintains proper 'this' binding with arrow functions or binding
+
+5. Event object:
+   - HTML: Window event object, varies by browser
+   - React: Synthetic event object, consistent across browsers
+
+
+---
+
+### What is `preventDefault()`?
+
+`preventDefault()` is not only a React thing - it's a standard JavaScript event method available in both vanilla JavaScript and frameworks like React.
+
+Key points about preventDefault():
+
+1. **Purpose**:
+   - Stops the default behavior of an event
+   - Different from stopPropagation() which stops event bubbling
+   - Can be used in both vanilla JavaScript and React
+
+2. **Common Use Cases**:
+   - Form submissions (prevent page reload)
+   - Link clicks (prevent navigation)
+   - Right-click context menu (prevent menu appearing)
+   - Drag operations (prevent dragging)
+   - Key presses (prevent default keyboard actions)
+
+3. **Difference from stopPropagation()**:
+```javascript
+// They do different things and can be used together
+element.addEventListener('click', (e) => {
+    e.preventDefault();  // Stops default behavior
+    e.stopPropagation(); // Stops event bubbling
+});
+```
+
+4. **Common Default Behaviors It Prevents**:
+   - Form submission -> page reload
+   - Link clicks -> page navigation
+   - Right click -> context menu
+   - Drag -> dragging elements
+   - Space bar -> page scroll
+   - Tab -> focus next element
+
+#### Examples
+
+1. **Forms**: Stop the page from refreshing
+```javascript
+form.onsubmit = function(event) {
+    event.preventDefault();
+    // Form won't submit and page won't refresh
+}
+```
+
+2. **Links**: Stop navigation
+```javascript
+link.onclick = function(event) {
+    event.preventDefault();
+    // Won't go to new page
+}
+```
+
+3. **Right Click**: Disable context menu
+```javascript
+element.oncontextmenu = function(event) {
+    event.preventDefault();
+    // Right-click menu won't appear
+}
+```
+
+---
+
+### What is `stopPropagation()`?
+
+Event bubbling is when an event starts from the deepest target element and "bubbles up" through its parent elements in the DOM tree. Let me demonstrate this concept:
+
+```mermaid
+flowchart TD
+    A[Document Root] --> B[div container]
+    B --> C[div parent]
+    C --> D[button]
+    
+    D -->|1. Event starts here| D1[Click on button]
+    D1 -->|2. Bubbles up| C1[parent div handler]
+    C1 -->|3. Continues up| B1[container div handler]
+    B1 -->|4. Reaches top| A1[document handler]
+    
+    style D fill:#f96,stroke:#333
+    style C fill:#9cf,stroke:#333
+    style B fill:#9cf,stroke:#333
+    style A fill:#9cf,stroke:#333
+
+```
+
+Let's look at practical examples of event bubbling and how to control it:
+
+```jsx
+// 1. HTML Example of Event Bubbling
+// ================================
+
+// Without bubbling control
+<div onclick="console.log('Container clicked')">
+    <div onclick="console.log('Parent clicked')">
+        <button onclick="console.log('Button clicked')">
+            Click me
+        </button>
+    </div>
+</div>
+
+// With stopPropagation()
+<div onclick="console.log('Container clicked')">
+    <div onclick="console.log('Parent clicked')">
+        <button onclick="handleButtonClick(event)">
+            Click me
+        </button>
+    </div>
+</div>
+
+<script>
+    function handleButtonClick(event) {
+        event.stopPropagation();
+        console.log('Button clicked');
+    }
+</script>
+
+// 2. React Examples
+// ================
+
+// Example 1: Basic Event Bubbling
+const BubblingDemo = () => {
+    return (
+        <div onClick={() => console.log('Container clicked')} className="p-4 border">
+            <div onClick={() => console.log('Parent clicked')} className="p-4 border">
+                <button onClick={() => console.log('Button clicked')} className="px-4 py-2">
+                    Click me
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// Example 2: Stopping Event Bubbling
+const StopBubblingDemo = () => {
+    const handleButtonClick = (e) => {
+        e.stopPropagation();  // Prevents event from bubbling up
+        console.log('Button clicked');
+    };
+
+    const handleParentClick = () => {
+        console.log('Parent clicked');
+    };
+
+    const handleContainerClick = () => {
+        console.log('Container clicked');
+    };
+
+    return (
+        <div onClick={handleContainerClick} className="p-4 border">
+            <div onClick={handleParentClick} className="p-4 border">
+                <button onClick={handleButtonClick} className="px-4 py-2">
+                    Click me (No Bubble)
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// Example 3: Conditional Bubbling Control
+const ConditionalBubblingDemo = () => {
+    const [shouldBubble, setShouldBubble] = useState(true);
+
+    const handleButtonClick = (e) => {
+        if (!shouldBubble) {
+            e.stopPropagation();
+        }
+        console.log('Button clicked');
+    };
+
+    return (
+        <div onClick={() => console.log('Container clicked')} className="p-4 border">
+            <label>
+                <input 
+                    type="checkbox"
+                    checked={shouldBubble}
+                    onChange={(e) => setShouldBubble(e.target.checked)}
+                /> Allow event bubbling
+            </label>
+            <button onClick={handleButtonClick} className="px-4 py-2">
+                Click me ({shouldBubble ? 'Will' : 'Won\'t'} bubble)
+            </button>
+        </div>
+    );
+};
+
+// Example 4: Using Capture Phase Instead of Bubbling
+const CapturePhaseDemo = () => {
+    return (
+        <div 
+            onClickCapture={() => console.log('Container capture')} 
+            onClick={() => console.log('Container bubble')}
+            className="p-4 border"
+        >
+            <button 
+                onClick={() => console.log('Button bubble')}
+                onClickCapture={() => console.log('Button capture')}
+                className="px-4 py-2"
+            >
+                Click me (with capture)
+            </button>
+        </div>
+    );
+};
+
+// Example 5: Practical Use Case - Modal Click Outside
+const Modal = ({ onClose, children }) => {
+    const handleBackdropClick = (e) => {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
+    };
+
+    return (
+        <div 
+            onClick={handleBackdropClick}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+        >
+            <div className="bg-white p-4 rounded">
+                {children}
+            </div>
+        </div>
+    );
+};
+
+```
+
+```mermaid
+flowchart TD
+    subgraph Without_stopPropagation
+        A1[Click Button] -->|1| B1[Button Handler: 'Button clicked']
+        B1 -->|2| C1[Parent Handler: 'Parent clicked']
+        C1 -->|3| D1[Container Handler: 'Container clicked']
+    end
+
+    subgraph With_stopPropagation
+        A2[Click Button] -->|1| B2[Button Handler: 'Button clicked']
+        B2 -->|2| C2[Event Stopped]
+        style C2 fill:#f96,stroke:#333
+    end
+```
+
+Key concepts about Event Bubbling Control:
+
+1. Natural Bubbling
+   - Events naturally bubble up from child to parent elements
+   - Each handler in the path gets executed
+   - Order is from most specific (child) to least specific (parent)
+
+2. Stopping Bubbling
+   - `e.stopPropagation()`: Stops the event from bubbling up
+   - Useful when you want to handle an event only at a specific level
+   - Common in modals, dropdowns, and other interactive components
+
+3. Capture Phase
+   - Opposite direction of bubbling (top-down instead of bottom-up)
+   - Less commonly used but useful for specific cases
+   - Accessed using `onClickCapture` in React
+
+4. Common Use Cases:
+   - Modal click-outside detection
+   - Dropdown menus
+   - Complex nested interactions
+   - Event delegation patterns
+   - Preventing parent handlers from firing
+
+5. Best Practices:
+   - Don't stop propagation unless necessary
+   - Use event delegation for better performance with many elements
+   - Consider using capture phase for special cases
+   - Always test interaction with parent components
+
 
 ---
 

@@ -86,8 +86,8 @@
     - [Difference Between `.js` and `.jsx` Files](#difference-between-js-and-jsx-files)
     - [What is Babel and Its Relation to React](#what-is-babel-and-its-relation-to-react)
     - [HTML `onclick` vs React `onClick`](#html-onclick-vs-react-onclick)
-    - [What is `preventDefault()`?](what-is-preventdefault)
-    - [What is `stopPropagation()`?](#what-is-stoppropagation)
+    - [What is `preventDefault()`](#what-is-preventdefault)
+    - [What is `stopPropagation()`](#what-is-stoppropagation)
 
 ---
 
@@ -4156,7 +4156,7 @@ Babel acts as a bridge between modern JavaScript code (including JSX) and the Ja
 
 ---
 
-# HTML `onclick` vs React `onClick`
+### HTML `onclick` vs React `onClick`
 
 The HTML onclick attribute is the traditional way to handle click events. It can be added directly to HTML elements and executes JavaScript code when clicked.
 

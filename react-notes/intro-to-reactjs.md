@@ -88,6 +88,7 @@
     - [HTML `onclick` vs React `onClick`](#html-onclick-vs-react-onclick)
     - [What is `preventDefault()`](#what-is-preventdefault)
     - [What is `stopPropagation()`](#what-is-stoppropagation)
+    - [Differences between `<Link>` and `<NavLink>`](#differences-between-link-and-navlink)
 
 ---
 
@@ -2644,37 +2645,27 @@ npm install react-router-dom
 Set up the router in your main application file.
 
 ```jsx
-// src/App.jsx
+// src/main.jsx
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App.jsx';
 
-function App() {
-  return (
-    <Router>
-      {/* Navigation Links */}
-      <nav>
-        <Link to='/'>Home</Link>
-        <Link to='/about'>About</Link>
-      </nav>
-
-      {/* Route Definitions */}
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/about' element={<About />} />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
+);
 ```
 
 **Explanation:**
 
-- **`<Router>`**: Wraps the entire application to enable routing capabilities.
+- **`<BrowserRouter>`**: Wraps the entire application to enable routing capabilities.
 - **`<nav>`**: Contains navigation links using the `<Link>` component.
+- **`<NavLink`**: It is almost same as `<Nav>`.
 - **`<Routes>`**: Encapsulates all your `<Route>` components.
 - **`<Route>`**: Defines a mapping between a URL path and a component to render.
 
@@ -2682,17 +2673,26 @@ export default App;
 
 Let's break down the key components and concepts step by step.
 
-#### 1. The `<Router>` Component
+#### 1. The `<BrowserRouter>` Component
 
 - **Purpose**: The `<Router>` component provides the routing context to its child components.
 - **Usage**: Typically wraps around your entire application.
 
 ```jsx
-import { BrowserRouter as Router } from 'react-router-dom';
+// src/main.jsx
 
-function App() {
-  return <Router>{/* Your components go here */}</Router>;
-}
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App.jsx';
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </StrictMode>
+);
 ```
 
 #### 2. The `<Routes>` and `<Route>` Components
@@ -2736,6 +2736,45 @@ function Navigation() {
   );
 }
 ```
+
+#### 4. The `<NavLink>` Component
+
+- **Purpose**: The `<NavLink>` component is similar to `<Link>` but provides additional styling or class functionality based on whether the link is active.
+- **Usage**: Ideal for creating navigation menus where you want to highlight the currently active route.
+
+**Example:**
+
+```jsx
+import { NavLink } from 'react-router-dom';
+
+function Navigation() {
+  return (
+    <nav>
+      <NavLink to='/' end activeClassName="active">Home</NavLink>
+      <NavLink to='/about' activeClassName="active">About</NavLink>
+    </nav>
+  );
+}
+```
+
+- **Behavior**: 
+  - Adds an `active` class (or a custom class via `activeClassName`) when the `to` path matches the current URL.
+  - The `end` prop ensures the match is exact (e.g., `/` matches only `/` and not `/about`).
+
+**Active Styling Example:**
+
+```jsx
+<NavLink
+  to="/about"
+  style={({ isActive }) => ({
+    fontWeight: isActive ? "bold" : "normal",
+    color: isActive ? "blue" : "black",
+  })}
+>
+  About
+</NavLink>
+```
+> For more details between `<Nav>` and `<NavLink>`, please read more [Differences between `<Link>` and `<NavLink>`](#differences-between-link-and-navlink)
 
 ### Creating a Multi-Page Application
 
@@ -4511,6 +4550,78 @@ Key concepts about Event Bubbling Control:
    - Use event delegation for better performance with many elements
    - Consider using capture phase for special cases
    - Always test interaction with parent components
+
+
+---
+
+### Differences between `<Link>` and `<NavLink>`
+
+In React Router, both `NavLink` and `Link` are used for navigation, but they have some key differences:
+
+---
+
+### **1. `Link`:**
+- **Purpose:** A basic navigation component that renders a link (`<a>` tag under the hood) to navigate between routes.
+- **Usage:** Use `Link` when you need a simple, unstyled navigation link.
+
+#### Example:
+```jsx
+import { Link } from 'react-router-dom';
+
+<Link to="/about">About</Link>
+```
+
+- **Behavior:**
+  - Navigates to the specified `to` path.
+  - No special styling or behavior based on the current route.
+
+---
+
+### **2. `NavLink`:**
+- **Purpose:** A specialized version of `Link` that adds styling based on whether the link is **active** (i.e., it matches the current route).
+- **Usage:** Use `NavLink` when you want to highlight the link that corresponds to the current route.
+
+#### Example:
+```jsx
+import { NavLink } from 'react-router-dom';
+
+<NavLink to="/about" activeClassName="active" end>
+  About
+</NavLink>
+```
+
+- **Behavior:**
+  - Adds an `active` class to the link when the `to` path matches the current route.
+  - The `end` prop ensures that the match is exact (similar to `exact` in routes).
+  - You can customize the active class or style using `activeClassName` or `style`.
+
+#### Active Styling Example:
+```jsx
+<NavLink
+  to="/about"
+  style={({ isActive }) => ({
+    fontWeight: isActive ? "bold" : "normal",
+    color: isActive ? "red" : "black",
+  })}
+>
+  About
+</NavLink>
+```
+
+---
+
+### Key Differences:
+| Feature            | **Link**                                | **NavLink**                            |
+|--------------------|-----------------------------------------|----------------------------------------|
+| **Active Styling** | No                                      | Adds `active` class or custom styles.  |
+| **Customization**  | Plain navigation links.                | Dynamic styling based on active route. |
+| **Use Case**       | General navigation.                    | Highlighting active routes in menus.   |
+
+---
+
+### When to Use:
+- Use **`Link`** for simple navigation without needing route-specific styles.
+- Use **`NavLink`** for navigation menus where you want to highlight the currently active route.
 
 
 ---
